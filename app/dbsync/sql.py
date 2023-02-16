@@ -7,6 +7,11 @@ INSERT INTO "Candidate" (candidate_id,first_name,middle_name,last_name,post,imag
 VALUES ('{candidate_id}','{first_name}','{middle_name}','{last_name}','{post}','{image}');
 """
 
+SQL_ADD_USER = """
+INSERT INTO "User" (name)
+VALUES ('{name}');
+"""
+
 SQL_DELETE_CANDIDATE = """
 delete from "Candidate" where candidate_id='{candidate_id}'
 """

@@ -1,5 +1,19 @@
 from pydantic import BaseModel
 
+
+class UserBase(BaseModel):
+    name: str
+    # class Config:
+    #     orm_mode=True
+
+
+class UserCreate(UserBase):
+    pass
+
+
+class UserRead(UserBase):
+    pass
+
 # candidate
 
 

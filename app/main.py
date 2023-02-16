@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, WebSocket
 from fastapi.responses import Response
 from starlette.responses import RedirectResponse
-from app.routers import admin, candidates, file, login, voters
+from app.routers import admin, candidates, file, login, voters, users,recommendation
 from app.db import init_local_db
 
 from starlette.middleware.cors import CORSMiddleware
@@ -23,10 +23,10 @@ load_dotenv()
 init_local_db()
 
 app = FastAPI(
-    title="BBVS api"
+    title="Tour api"
 )
 
-origins = ['http://localhost:3000']
+origins = ['*']
 
 app.add_middleware(
     CORSMiddleware,
@@ -39,19 +39,20 @@ app.add_middleware(
 # creating different application for '/static'
 app.mount('/static', StaticFiles(directory='static'))
 
+
 @app.get("/", name="root", tags=["Root"])
 async def root():
-    return {"message": f"Welcome to BBVS API {app.version}"}
+    return {"message": f"Welcome to Tour API {app.version}"}
 
 
-app.include_router(candidates.router)
-app.include_router(voters.router)
-app.include_router(admin.router)
-app.include_router(file.router)
-app.include_router(login.router)
+app.include_router(users.router)
+app.include_router(recommendation.router)
 
-
-
+# app.include_router(candidates.router)
+# app.include_router(voters.router)
+# app.include_router(admin.router)
+# app.include_router(file.router)
+# app.include_router(login.router)
 
 
 # def run():

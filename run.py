@@ -3,13 +3,16 @@ import uvicorn
 # # Package # #
 from app.settings import api_settings
 
+
 def run():
     """Run the API using Uvicorn"""
     uvicorn.run(
         'app.main:app',
         port=api_settings.port,
-        host=api_settings.host,
+        host='192.168.43.129',
         reload=True,
     )
-if __name__=='__main__':
+
+
+if __name__ == '__main__':
     run()
