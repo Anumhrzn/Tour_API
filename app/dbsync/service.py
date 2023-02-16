@@ -1,7 +1,7 @@
 from pony.orm import db_session
 from fastapi import HTTPException
-from app.dbsync.sql import SQL_ADD_ADMIN, SQL_ADD_ADMIN_CREDENTIAL, SQL_ADD_CANDIDATE, SQL_ADD_USER, SQL_ADD_VOTER, SQL_CANDIDATES, SQL_DELETE_CANDIDATE, SQL_DELETE_VOTER, SQL_SINGLE_ADMIN_BY_ID, SQL_SINGLE_ADMIN_CREDENTIAL_BY_ID, SQL_SINGLE_VOTER_BY_ID, SQL_UPDATE_CANDIDATE, SQL_UPDATE_VOTER, SQL_VOTERS
-from app.schemas import CandidateCreate, VoterCreate, UserCreate
+from app.dbsync.sql import SQL_ADD_ADMIN, SQL_ADD_PLACE, SQL_ADD_ADMIN_CREDENTIAL, SQL_ADD_CANDIDATE, SQL_ADD_USER, SQL_ADD_VOTER, SQL_CANDIDATES, SQL_DELETE_CANDIDATE, SQL_DELETE_VOTER, SQL_GET_PLACE_BY_NAME, SQL_SINGLE_ADMIN_BY_ID, SQL_SINGLE_ADMIN_CREDENTIAL_BY_ID, SQL_SINGLE_VOTER_BY_ID, SQL_UPDATE_CANDIDATE, SQL_UPDATE_VOTER, SQL_VOTERS
+from app.schemas import CandidateCreate, VoterCreate, UserCreate, PlaceCreate
 from app.models import Candidate
 from app.db import db
 from pony.orm.dbapiprovider import IntegrityError
@@ -20,6 +20,35 @@ class UserService:
                 status_code=409, detail="User already registered")
 
 
+class PlaceService:
+    @db_session
+    def create_place(self, place_ob: PlaceCreate):
+        sql = SQL_ADD_PLACE.format(
+            name=place_ob.name,
+            image=place_ob.image,
+            description=place_ob.description
+        )
+        try:
+            db.execute(sql)
+        except IntegrityError:
+            raise HTTPException(
+                status_code=409, detail="Place already exists")
+
+    @db_session
+    def get_place_by_name(self, name):
+        sql = SQL_GET_PLACE_BY_NAME.format(name=name)
+        cursor = db.execute(sql)
+        place = {}
+        for row in cursor.fetchall():
+            id, name, image, description = row
+            place = {
+                'name': name,
+                'image': image,
+                'description': description,
+            }
+        return place
+
+
 class CandidateService:
     @db_session
     def create_candidate(self, candidate_ob: CandidateCreate):
@@ -30,7 +59,7 @@ class CandidateService:
                                        post=candidate_ob.post.upper(),
                                        image=candidate_ob.image)
         try:
-            db.execute(sql)
+            cursor = db.execute(sql)
         except IntegrityError:
             raise HTTPException(
                 status_code=409, detail="Candidate already registered")

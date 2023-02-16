@@ -5,7 +5,7 @@ db = Database()
 
 
 def init_local_db():
-    db.bind(provider='sqlite', filename='bbvs.db', create_db=True)
+    db.bind(provider='sqlite', filename='bbvs_new.db', create_db=True)
     db.generate_mapping(create_tables=True)
 
 # def init_db():

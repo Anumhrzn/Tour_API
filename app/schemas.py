@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 
 class UserBase(BaseModel):
@@ -6,6 +7,10 @@ class UserBase(BaseModel):
     # class Config:
     #     orm_mode=True
 
+class PlaceCreate(BaseModel):
+    name: str
+    image: str
+    description:Optional[str]
 
 class UserCreate(UserBase):
     pass

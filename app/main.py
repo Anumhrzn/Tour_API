@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, WebSocket
 from fastapi.responses import Response
 from starlette.responses import RedirectResponse
-from app.routers import admin, candidates, file, login, voters, users,recommendation
+from app.routers import admin, candidates, file, login, voters, users, recommendation, places
 from app.db import init_local_db
 
 from starlette.middleware.cors import CORSMiddleware
@@ -47,6 +47,7 @@ async def root():
 
 app.include_router(users.router)
 app.include_router(recommendation.router)
+app.include_router(places.router)
 
 # app.include_router(candidates.router)
 # app.include_router(voters.router)

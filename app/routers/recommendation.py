@@ -20,9 +20,9 @@ def get_recommendation(title: str):
 
 
 @router.get("/user/{uuid}")
-def get_userID(uuid: int):
+async def get_userID(uuid: int):
     # user_service.create_user(user_ob=user_ob)
-    return recommendation_service.get_userid(uuid)
+    return await recommendation_service.get_userid(uuid)
 
 
 # @router.delete("/deleteCandidate/{candidate_id}")
