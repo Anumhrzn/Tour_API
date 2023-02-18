@@ -9,7 +9,7 @@ def run():
     uvicorn.run(
         'app.main:app',
         port=api_settings.port,
-        host='192.168.1.103',
+        host='192.168.61.191',
         reload=True,
     )
 
