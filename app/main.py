@@ -3,15 +3,9 @@ FastAPI app definition, initialization and definition of routes
 """
 
 # # Installed # #
-from unicodedata import name
-from app.settings import api_settings
-from imp import reload
 from dotenv import load_dotenv
-# from Slr import Prediction
 from fastapi import FastAPI, WebSocket
-from fastapi.responses import Response
-from starlette.responses import RedirectResponse
-from app.routers import admin, candidates, file, login, voters, users, recommendation, places
+from app.routers import admin, candidates, file, login, voters, users, recommendation, places, distance, weather
 from app.db import init_local_db
 
 from starlette.middleware.cors import CORSMiddleware
@@ -48,6 +42,8 @@ async def root():
 app.include_router(users.router)
 app.include_router(recommendation.router)
 app.include_router(places.router)
+app.include_router(distance.router)
+app.include_router(weather.router)
 
 # app.include_router(candidates.router)
 # app.include_router(voters.router)

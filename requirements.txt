@@ -9,4 +9,12 @@ fastapi
 python-multipart
 python-jose[cryptography]
 passlib[bcrypt]
+decouple
 python-decouple
+haversine
+xmltodict
+requests
+pandas
+nltk
+sklearn
+fastapi-cache

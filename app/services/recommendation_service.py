@@ -13,6 +13,7 @@ exclude = set(string.punctuation)
 place_service = service.PlaceService()
 
 
+# content based filtering
 def filter_keywords(doc):
     doc = doc.lower()
     stop_free = " ".join([i for i in doc.split() if i not in stop_words])
@@ -40,6 +41,7 @@ def get_recommendations(title):
     return titles.iloc[product_indices].tolist()
 
 
+# collaborative filtering
 async def get_userid(picked_userid):
     # user_similarity.drop(index=picked_userid, inplace=True)
     n = 10
@@ -71,7 +73,7 @@ async def get_userid(picked_userid):
         item_score[i] = total / count
 
     item_score = pd.DataFrame(item_score.items(), columns=[
-                              'Place', 'Place_score'])
+        'Place', 'Place_score'])
     ranked_item_score = item_score.sort_values(
         by='Place_score', ascending=False)
     m = 10
@@ -80,6 +82,6 @@ async def get_userid(picked_userid):
     print(recommendations)
     places = []
     for name in recommendations:
-        place =  place_service.get_place_by_name(name)
+        place = place_service.get_place_by_name(name)
         places.append(place)
     return places
