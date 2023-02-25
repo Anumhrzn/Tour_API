@@ -11,13 +11,21 @@ class BaseSettings(pydantic.BaseSettings):
         env_file = ".env"
 
 
-class APISettings(BaseSettings):
+class ApiSettings(BaseSettings):
     title: str = "TOUR API"
     host: str = "localhost"
     port: int = 5000
 
     class Config(BaseSettings.Config):
         env_prefix = "API_"
+
+
+class RedisSettings(BaseSettings):
+    url: str = "redis://127.0.0.1:6379"
+    cache_ttl: int = 5
+
+    class Config:
+        env_prefix = "REDIS_"
 
 
 # class DBSettings(BaseSettings):
@@ -31,6 +39,15 @@ class APISettings(BaseSettings):
 #     class Config(BaseSettings.Config):
 #         env_prefix = "DB_"
 
+class Settings(BaseSettings):
+    api_settings: ApiSettings = ApiSettings()
+    redis_settings: RedisSettings = RedisSettings()
 
-api_settings = APISettings()
+
 # db_settings = DBSettings()
+
+def get_configs():
+    return Settings()
+
+
+configs = get_configs()

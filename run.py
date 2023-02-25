@@ -1,7 +1,9 @@
 import uvicorn
 
 # # Package # #
-from app.settings import api_settings
+from app.settings import configs
+
+api_settings = configs.api_settings
 
 
 def run():
