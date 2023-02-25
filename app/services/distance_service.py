@@ -8,9 +8,9 @@ import json
 
 
 @cache()
-def getDistance(starting_point, destination_point):
-    inputStartLoc = (starting_point.latitude, starting_point.longitude)
-    inputDestLoc = (destination_point.latitude, destination_point.longitude)
+def get_distance(starting_point, destination_point):
+    inputStartLoc = (starting_point['latitude'], starting_point['longitude'])
+    inputDestLoc = (destination_point['latitude'], destination_point['longitude'])
     mappedSourceLoc = cj.getKNN(inputStartLoc)
     mappedDestLoc = cj.getKNN(inputDestLoc)
     path = algo.aStar(mappedSourceLoc, mappedDestLoc)
