@@ -5,7 +5,7 @@ FastAPI app definition, initialization and definition of routes
 # # Installed # #
 from dotenv import load_dotenv
 from fastapi import FastAPI, WebSocket
-from app.routers import admin, candidates, file, login, voters, users, recommendation, places, distance, weather
+from app.routers import users, recommendation, places, distance, weather
 from app.db import init_local_db
 
 from starlette.middleware.cors import CORSMiddleware

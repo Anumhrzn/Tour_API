@@ -12,12 +12,13 @@ class BaseSettings(pydantic.BaseSettings):
 
 
 class APISettings(BaseSettings):
-    title: str = "BBVS API"
+    title: str = "TOUR API"
     host: str = "localhost"
     port: int = 5000
 
     class Config(BaseSettings.Config):
         env_prefix = "API_"
+
 
 # class DBSettings(BaseSettings):
 #     provider:str
