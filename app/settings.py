@@ -13,6 +13,8 @@ class BaseSettings(pydantic.BaseSettings):
 
 class ApiSettings(BaseSettings):
     title: str = "TOUR API"
+    description: str = "Rest endpoints for sales api"
+    version: str = "1.0.0"
     host: str = "localhost"
     port: int = 5000
 

@@ -7,12 +7,12 @@ from app.settings import configs
 redis_settings = configs.redis_settings
 
 
-def cache(expire: int = redis_settings.cache_ttl):
+def cache(expire: int = -1):
     """
     Decorator for caching api response. It re-fetches again after the expiry time
 
    Args:
-      expire (int): Expire time in seconds
+      expire (int): Expire time in seconds, Defaults expire to infinity
     """
 
     def decorator(func):
@@ -24,7 +24,8 @@ def cache(expire: int = redis_settings.cache_ttl):
                 return json.loads(cached_data)
             returned_value = await func(*args, **kwargs)
             await redis_cache.set(cache_key, json.dumps(returned_value))
-            await redis_cache.expire(cache_key, expire)
+            # if (expire > 0):
+            #     await redis_cache.expire(cache_key, expire)
             return returned_value
 
         return wrapper
@@ -38,4 +39,4 @@ def default(name: str, last_name: str):
 
 
 if __name__ == '__main__':
-    print(default('nabin', last_name='kawan'))
+    default('nabin', last_name='kawan')

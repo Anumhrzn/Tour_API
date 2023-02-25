@@ -10,6 +10,12 @@ from app.db import init_local_db
 
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi_cache import caches, close_caches
+from fastapi_cache.backends.redis import CACHE_KEY, RedisCacheBackend
+from app.settings import configs
+
+api_settings = configs.api_settings
+redis_settings = configs.redis_settings
 
 # # Package # #
 
@@ -17,7 +23,9 @@ load_dotenv()
 init_local_db()
 
 app = FastAPI(
-    title="Tour api"
+    title=api_settings.title,
+    description=api_settings.description,
+    version=api_settings.version,
 )
 
 origins = ['*']
@@ -45,21 +53,17 @@ app.include_router(places.router)
 app.include_router(distance.router)
 app.include_router(weather.router)
 
-# app.include_router(candidates.router)
-# app.include_router(voters.router)
-# app.include_router(admin.router)
-# app.include_router(file.router)
-# app.include_router(login.router)
+
+@app.on_event('startup')
+async def on_startup() -> None:
+    rc = RedisCacheBackend(redis_settings.url)
+    caches.set(CACHE_KEY, rc)
 
 
-# def run():
-#     """Run the API using Uvicorn"""
-#     uvicorn.run(
-#         'app:app',
-#         port=api_settings.port,
-#         host=api_settings.host,
-#         reload=True,
-#     )
+@app.on_event('shutdown')
+async def on_shutdown() -> None:
+    await close_caches()
+
 
 if __name__ == "__main__":
     print("running")

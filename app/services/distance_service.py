@@ -1,8 +1,13 @@
 import app.lib.convertJSON as cj
 import app.lib.astar as algo
+from app.redis_cache import get_cache
+from app.redis_cache.decorators import cache
+from fastapi_cache.backends.redis import RedisCacheBackend
+
 import json
 
 
+@cache()
 def getDistance(starting_point, destination_point):
     inputStartLoc = (starting_point.latitude, starting_point.longitude)
     inputDestLoc = (destination_point.latitude, destination_point.longitude)
