@@ -17,4 +17,4 @@ requests
 pandas
 nltk
 sklearn
-fastapi-cache
+fastapi_cache
