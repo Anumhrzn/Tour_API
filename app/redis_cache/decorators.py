@@ -22,7 +22,7 @@ def cache(expire: int = -1):
             cached_data = await redis_cache.get(cache_key)
             if cached_data:
                 return json.loads(cached_data)
-            returned_value = func(*args, **kwargs)
+            returned_value = await func(*args, **kwargs)
             await redis_cache.set(cache_key, json.dumps(returned_value))
             if (expire > 0):
                 await redis_cache.expire(cache_key, expire)
