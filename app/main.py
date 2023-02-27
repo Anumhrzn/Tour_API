@@ -5,7 +5,7 @@ FastAPI app definition, initialization and definition of routes
 # # Installed # #
 from dotenv import load_dotenv
 from fastapi import FastAPI, WebSocket
-from app.routers import users, recommendation, places, distance, weather
+from app.routers import users, recommendation, places, distance, weather, rating
 from app.db import init_local_db
 
 from starlette.middleware.cors import CORSMiddleware
@@ -52,6 +52,7 @@ app.include_router(recommendation.router)
 app.include_router(places.router)
 app.include_router(distance.router)
 app.include_router(weather.router)
+app.include_router(rating.router)
 
 
 @app.on_event('startup')

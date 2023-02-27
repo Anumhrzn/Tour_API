@@ -10,3 +10,8 @@ VALUES ('{name}','{image}','{description}');
 SQL_GET_PLACE_BY_NAME = """
 select * from "Places" where name='{name}';
 """
+
+SQL_ADD_USER_RATINGS ="""
+INSERT INTO "Ratings"(name,ratings)
+VALUES ('{name}','{ratings}')
+"""
