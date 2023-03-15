@@ -46,16 +46,18 @@ class PlaceService:
                 'description': description,
             }
         return place
-    
+
 
 class RatingService:
     @db_session
-    def get_user_rating(self,place_ob: Ratings ,rating_ob : Ratings):
+    def get_user_rating(self, rating_ob: Ratings):
         sql = SQL_ADD_USER_RATINGS.format(
-            place = place_ob.place,
-            rating = rating_ob.rating            )
+            name=rating_ob.name,
+            place_name=rating_ob.place_name,
+            rating=rating_ob.rating,
+            description=rating_ob.description)
         try:
             db.execute(sql)
         except IntegrityError:
             raise HTTPException(
-                status_code=409, detail="User already registered")        
+                status_code=409, detail="User already registered")

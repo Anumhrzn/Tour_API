@@ -1,9 +1,15 @@
+import json
+
+from fastapi_cache.backends.redis import RedisCacheBackend
+
 import app.lib.convertJSON as cj
 import heapq as heap
 import time
 
+from app.redis_cache import get_cache
 
-def aStar(source, destination):
+
+async def aStar(source, destination):
     open_list = []
     g_values = {}
 
@@ -30,7 +36,15 @@ def aStar(source, destination):
             print("We have reached to the goal")
             break
 
-        nbrs = cj.getNeighbours(curr_state, destination)
+        cache: RedisCacheBackend = get_cache()
+        cache_key = f'{curr_state}{destination[0]}{destination[1]}'
+        print((cache_key))
+        in_cache = await cache.get(cache_key)
+        if in_cache:
+            nbrs = json.loads(in_cache)
+        else:
+            nbrs = cj.getNeighbours(curr_state, destination)
+            await cache.set(cache_key, json.dumps(nbrs))
         print(nbrs)
         values = nbrs[curr_state]
         for eachNeighbour in values:

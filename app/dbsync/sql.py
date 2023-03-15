@@ -11,7 +11,7 @@ SQL_GET_PLACE_BY_NAME = """
 select * from "Places" where name='{name}';
 """
 
-SQL_ADD_USER_RATINGS ="""
-INSERT INTO "Ratings"(name,ratings)
-VALUES ('{name}','{ratings}')
+SQL_ADD_USER_RATINGS = """
+INSERT INTO "Ratings"(name,place_name,rating,description)
+VALUES ('{name}','{place_name}','{rating}','{description}')
 """

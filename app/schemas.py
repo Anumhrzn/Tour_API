@@ -21,8 +21,10 @@ class UserCreate(UserBase):
 class UserRead(UserBase):
     pass
 
+
 class Ratings(BaseModel):
-    place: str
-    description:Optional[str]
+    name: str
+    place_name: str
     rating: float
- 
+    description: Optional[str]
+

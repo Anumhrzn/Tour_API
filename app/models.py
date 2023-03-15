@@ -20,10 +20,11 @@ class Places(db.Entity):
     image = Required(str)
     description = Optional(LongStr, default="")
 
+
 class Ratings(db.Entity):
     __table__ = "ratings table"
 
     place_name = Required(str, unique=True)
-    name = Required(str,uniqure=True)
-    ratings=Required(float)
-    description =Optional(str,default='')
+    name = Required(str, uniqure=True)
+    ratings = Required(float)
+    description = Optional(str, default='')
