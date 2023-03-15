@@ -1,7 +1,7 @@
 from pony.orm import db_session
 from fastapi import HTTPException
-from app.dbsync.sql import SQL_ADD_PLACE, SQL_ADD_USER, SQL_GET_PLACE_BY_NAME
-from app.schemas import UserCreate, PlaceCreate
+from app.dbsync.sql import SQL_ADD_PLACE, SQL_ADD_USER, SQL_GET_PLACE_BY_NAME, SQL_ADD_USER_RATINGS
+from app.schemas import UserCreate, PlaceCreate, Ratings
 from app.db import db
 from pony.orm.dbapiprovider import IntegrityError
 
@@ -46,3 +46,18 @@ class PlaceService:
                 'description': description,
             }
         return place
+
+
+class RatingService:
+    @db_session
+    def get_user_rating(self, rating_ob: Ratings):
+        sql = SQL_ADD_USER_RATINGS.format(
+            name=rating_ob.name,
+            place_name=rating_ob.place_name,
+            rating=rating_ob.rating,
+            description=rating_ob.description)
+        try:
+            db.execute(sql)
+        except IntegrityError:
+            raise HTTPException(
+                status_code=409, detail="User already registered")
