@@ -1,7 +1,8 @@
 from pony.orm import db_session
 from fastapi import HTTPException
-from app.dbsync.sql import SQL_ADD_PLACE, SQL_ADD_USER, SQL_GET_PLACE_BY_NAME, SQL_ADD_USER_RATINGS
-from app.schemas import UserCreate, PlaceCreate, Ratings
+from app.dbsync.sql import SQL_ADD_PLACE, SQL_ADD_USER, SQL_GET_PLACE_BY_NAME, SQL_ADD_USER_RATINGS, \
+    SQL_GET_USER_BY_NAME
+from app.schemas import UserCreate, PlaceCreate, Ratings, UserLogin
 from app.db import db
 from pony.orm.dbapiprovider import IntegrityError
 
@@ -10,13 +11,39 @@ class UserService:
     @db_session
     def create_user(self, user_ob: UserCreate):
         sql = SQL_ADD_USER.format(
-            name=user_ob.name
+            name=user_ob.name,
+            password=user_ob.password
         )
         try:
             db.execute(sql)
         except IntegrityError:
             raise HTTPException(
                 status_code=409, detail="User already registered")
+
+    @db_session
+    def login_user(self, user_ob: UserLogin):
+        sql = SQL_GET_USER_BY_NAME.format(
+            name=user_ob.name,
+            password=user_ob.password
+        )
+        cursor = db.execute(sql)
+        print(cursor)
+        user = None
+        for row in cursor.fetchall():
+            id, name, password = row
+            user = {
+                'name': name,
+                'password': password,
+            }
+            print(user)
+        if user is None:
+            raise HTTPException(
+                status_code=404, detail="User not found")
+        else:
+            if user['password'] != user_ob.password:
+                raise HTTPException(
+                    status_code=401, detail="Username or password incorrect")
+        return user
 
 
 class PlaceService:

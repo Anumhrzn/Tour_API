@@ -10,6 +10,7 @@ class User(db.Entity):
 
     id = PrimaryKey(int, auto=True)
     name = Required(str, unique=True)
+    password = Required(str)
 
 
 class Places(db.Entity):

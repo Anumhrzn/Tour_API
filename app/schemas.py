@@ -4,6 +4,7 @@ from typing import Optional
 
 class UserBase(BaseModel):
     name: str
+    password: str
     # class Config:
     #     orm_mode=True
 
@@ -18,6 +19,10 @@ class UserCreate(UserBase):
     pass
 
 
+class UserLogin(UserBase):
+    pass
+
+
 class UserRead(UserBase):
     pass
 
@@ -27,4 +32,3 @@ class Ratings(BaseModel):
     place_name: str
     rating: float
     description: Optional[str]
-
