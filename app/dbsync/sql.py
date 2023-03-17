@@ -1,6 +1,6 @@
 SQL_ADD_USER = """
-INSERT INTO "User" (name)
-VALUES ('{name}');
+INSERT INTO "User" (name,password)
+VALUES ('{name}','{password}');
 """
 
 SQL_ADD_PLACE = """
@@ -9,6 +9,10 @@ VALUES ('{name}','{image}','{description}');
 """
 SQL_GET_PLACE_BY_NAME = """
 select * from "Places" where name='{name}';
+"""
+
+SQL_GET_USER_BY_NAME = """
+select * from "User" where name='{name}';
 """
 
 SQL_ADD_USER_RATINGS = """

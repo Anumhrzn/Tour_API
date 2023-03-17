@@ -37,8 +37,14 @@ def get_recommendations(title):
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
     sim_scores = sim_scores[1:6]
     product_indices = [i[0] for i in sim_scores]
-    print(titles.iloc[product_indices].tolist())
-    return titles.iloc[product_indices].tolist()
+    content_recommendations = titles.iloc[product_indices].tolist()
+    print(content_recommendations)
+    return content_recommendations
+    # places = []
+    # for name in content_recommendations:
+    #     place = place_service.get_place_by_name(name)
+    #     places.append(place)
+    # return places
 
 
 # collaborative filtering
