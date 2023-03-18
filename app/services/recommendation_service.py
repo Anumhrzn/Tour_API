@@ -39,12 +39,14 @@ def get_recommendations(title):
     product_indices = [i[0] for i in sim_scores]
     content_recommendations = titles.iloc[product_indices].tolist()
     print(content_recommendations)
-    return content_recommendations
-    # places = []
-    # for name in content_recommendations:
-    #     place = place_service.get_place_by_name(name)
-    #     places.append(place)
-    # return places
+    # return content_recommendations
+    places = []
+    searched_place = place_service.get_place_by_name(title)
+    for name in content_recommendations:
+        place = place_service.get_place_by_name(name)
+        places.append(place)
+    print(places)
+    return {'recommended_places': places, 'searched_place': searched_place}
 
 
 # collaborative filtering

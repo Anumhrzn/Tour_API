@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 import app.dbsync.service as service
-from app.schemas import PlaceCreate
+from app.schemas import PlaceCreate, PlaceUpdate
 
 router = APIRouter(prefix="/api/places",
                    tags=["Places"])
@@ -25,6 +25,11 @@ def get_place_by_name(name: str):
     data = place_service.get_place_by_name(name)
     return data
 
+
+@router.post("/updatePlace")
+def update_places(places: PlaceUpdate):
+    for data in places.datas:
+        place_service.update_place(data)
 
 # @router.delete("/deleteCandidate/{candidate_id}")
 # def delete_candidate(candidate_id: str):
