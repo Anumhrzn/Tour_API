@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Any
 
 
 class UserBase(BaseModel):
@@ -13,6 +13,8 @@ class PlaceCreate(BaseModel):
     name: str
     image: str
     description: Optional[str]
+    latitude: float
+    longitude: float
 
 
 class UserCreate(UserBase):
@@ -32,3 +34,7 @@ class Ratings(BaseModel):
     place_name: str
     rating: float
     description: Optional[str]
+
+
+class PlaceUpdate(BaseModel):
+    datas: Any

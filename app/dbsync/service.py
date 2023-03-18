@@ -1,7 +1,7 @@
 from pony.orm import db_session
 from fastapi import HTTPException
 from app.dbsync.sql import SQL_ADD_PLACE, SQL_ADD_USER, SQL_GET_PLACE_BY_NAME, SQL_ADD_USER_RATINGS, \
-    SQL_GET_USER_BY_NAME
+    SQL_GET_USER_BY_NAME, SQL_GET_RATINGS_BY_PLACE_NAME, SQL_UPDATE_PLACE
 from app.schemas import UserCreate, PlaceCreate, Ratings, UserLogin
 from app.db import db
 from pony.orm.dbapiprovider import IntegrityError
@@ -66,13 +66,28 @@ class PlaceService:
         cursor = db.execute(sql)
         place = {}
         for row in cursor.fetchall():
-            id, name, image, description = row
+            id, name, image, description, latitude, longitude = row
             place = {
                 'name': name,
                 'image': image,
                 'description': description,
+                'latitude': latitude,
+                'longitude': longitude,
             }
         return place
+
+    @db_session
+    def update_place(self, place_ob):
+        sql = SQL_UPDATE_PLACE.format(
+            name=place_ob['places'],
+            latitude=place_ob['Latitude'],
+            longitude=place_ob['Longitude'],
+        )
+        try:
+            db.execute(sql)
+        except IntegrityError:
+            raise HTTPException(
+                status_code=409, detail="Place already exists")
 
 
 class RatingService:
@@ -88,3 +103,19 @@ class RatingService:
         except IntegrityError:
             raise HTTPException(
                 status_code=409, detail="User already registered")
+
+    @db_session
+    def get_ratings_by_place_name(self, place_name):
+        sql = SQL_GET_RATINGS_BY_PLACE_NAME.format(place_name=place_name)
+        cursor = db.execute(sql)
+        ratings = []
+        for row in cursor.fetchall():
+            id, name, place_name, rating, description = row
+            place_rating = {
+                'name': name,
+                'place_name': place_name,
+                'rating': rating,
+                'description': description,
+            }
+            ratings.append(place_rating)
+        return ratings

@@ -2,7 +2,7 @@ from email.policy import default
 from enum import auto
 from optparse import Option
 from app.db import db
-from pony.orm import PrimaryKey, Required, Optional, LongStr
+from pony.orm import PrimaryKey, Required, Optional, LongStr, Decimal
 
 
 class User(db.Entity):
@@ -20,6 +20,8 @@ class Places(db.Entity):
     name = Required(str, unique=True)
     image = Required(str)
     description = Optional(LongStr, default="")
+    latitude = Optional(float)
+    longitude = Optional(float)
 
 
 class Ratings(db.Entity):
