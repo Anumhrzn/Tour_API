@@ -32,6 +32,7 @@ class UserService:
         for row in cursor.fetchall():
             id, name, password = row
             user = {
+                'id': id,
                 'name': name,
                 'password': password,
             }
@@ -88,6 +89,20 @@ class PlaceService:
         except IntegrityError:
             raise HTTPException(
                 status_code=409, detail="Place already exists")
+
+    @db_session
+    def add_new_place(self, place_ob):
+        sql = SQL_ADD_PLACE.format(
+            name=place_ob['name'],
+            image=place_ob['image'],
+            description=place_ob['description'],
+            latitude=None,
+            longitude=None,
+        )
+        try:
+            db.execute(sql)
+        except IntegrityError:
+            pass
 
 
 class RatingService:

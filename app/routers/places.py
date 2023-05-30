@@ -31,6 +31,12 @@ def update_places(places: PlaceUpdate):
     for data in places.datas:
         place_service.update_place(data)
 
+
+@router.post("/addNewPlaces")
+def add_new_place(places: PlaceUpdate):
+    for data in places.datas:
+        place_service.add_new_place(data)
+
 # @router.delete("/deleteCandidate/{candidate_id}")
 # def delete_candidate(candidate_id: str):
 #     candidate_service.delete_candidate(candidate_id=candidate_id)

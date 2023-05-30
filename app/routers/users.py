@@ -15,4 +15,5 @@ def add_user(user_ob: UserCreate):
 
 @router.post("/login")
 def login_user(user_ob: UserLogin):
-    user_service.login_user(user_ob=user_ob)
+    return user_service.login_user(user_ob=user_ob)
+
